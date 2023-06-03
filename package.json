@@ -1,0 +1,24 @@
+{
+  "dependencies": {
+    "electron": "^25.0.1",
+    "mysql": "^2.18.1"
+  },
+  "name": "megafon",
+  "version": "1.0.0",
+  "description": "megafonAPP",
+  "main": "main.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "starttest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/o0lKinGl0o/megafonAPP.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/o0lKinGl0o/megafonAPP/issues"
+  },
+  "homepage": "https://github.com/o0lKinGl0o/megafonAPP#readme"
+}
