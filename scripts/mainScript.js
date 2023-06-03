@@ -20,3 +20,9 @@ function closeApp(){
     const ipc = window.require('electron').ipcRenderer;
     ipc.send('closeApp');
 }
+function openWindow(window){
+    ipc.send('open'+window);
+}
+function closeWindow(window){
+    ipc.send('close'+window+'Window');
+}

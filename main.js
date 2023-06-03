@@ -58,7 +58,36 @@ function createChildWindow() {
     childWindow.show();
   });
 }
+function createCompanyWindow() {
+  companyWindow = new BrowserWindow({
+    modal: true,
+    show: false,
+    hasShadow: false,
+    //devTools: false,
+    //titleBarStyle: `hidden`,
+    //skipTaskbar:false,
+    webPreferences: {
+      //devTools: false,
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+    },
+  });
+  companyWindow.loadFile("companyWindow.html");
+  companyWindow.once("ready-to-show", () => {
+    companyWindow.maximize();
+    companyWindow.show();
+  });
+}
 ipcMain.on("openChildWindow", (event, arg) => {
   createChildWindow();
-  //mainWindow.hide();
+  mainWindow.hide();
+});
+ipcMain.on("openCompany", (event, arg) => {
+  createCompanyWindow();
+  //childWindow.hide();
+});
+ipcMain.on("closeChildWindow", (event, arg) => {
+  childWindow.close();
+  mainWindow.show();
 });
