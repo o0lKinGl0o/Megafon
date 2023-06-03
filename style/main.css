@@ -1,0 +1,22 @@
+@font-face {
+    font-family: "Intro";
+    src: url("../styles/fonts/Intro.otf") format("truetype");
+    font-style: normal;
+    font-weight: normal;
+}
+.transbox{
+    transition: 0.5s;
+    opacity: 0;
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    z-index: -1;
+    top: 0%;
+    left: 0%;
+}
+.transboxActive{
+    opacity: 100;
+    background:rgba(14, 16, 20, 0.7);
+    backdrop-filter: blur(3px);
+    z-index: 1;
+}
