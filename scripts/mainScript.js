@@ -107,6 +107,7 @@ function save(id){
 }
 function filter(inputsFilter){
     for (const key in inputsFilter) {
+        console.log(`${key}`);
         document.getElementById(`${key}`).addEventListener('input', filterTable);  
         function filterTable() {
         const searchValue = document.getElementById(key).value.toLowerCase();
@@ -131,7 +132,7 @@ function canceladdRows(){
     hideButtonSaveRow();
 }
 function hideButtonSaveRow(){
-    document.getElementById('addEmployees').classList.toggle('hide')
+    document.getElementById('addRows').classList.toggle('hide')
     document.getElementById('addRowsInDB').classList.toggle('hide')
     document.getElementById('canceladdRows').classList.toggle('hide')
 }

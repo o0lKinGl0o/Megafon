@@ -100,6 +100,27 @@ function createEmployeeWindow() {
     employeeWindow.show();
   });
 }
+function createProvidersWindow() {
+  providersWindow = new BrowserWindow({
+    modal: true,
+    show: false,
+    hasShadow: false,
+    //devTools: false,
+    //titleBarStyle: `hidden`,
+    //skipTaskbar:false,
+    webPreferences: {
+      //devTools: false,
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+    },
+  });
+  providersWindow.loadFile("providersWindow.html");
+  providersWindow.once("ready-to-show", () => {
+    providersWindow.maximize();
+    providersWindow.show();
+  });
+}
 ipcMain.on("openChildWindow", (event, arg) => {
   createChildWindow();
   mainWindow.hide();
@@ -120,7 +141,15 @@ ipcMain.on("openEmployee", (event, arg) => {
   createEmployeeWindow();
   companyWindow.hide();
 });
+ipcMain.on("openProviders", (event, arg) => {
+  createProvidersWindow();
+  companyWindow.hide();
+});
 ipcMain.on("closeEmployeeWindow", (event, arg) => {
   employeeWindow.close();
+  companyWindow.show();
+});
+ipcMain.on("closeProvidersWindow", (event, arg) => {
+  providersWindow.close();
   companyWindow.show();
 });
