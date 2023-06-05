@@ -7,7 +7,9 @@
   </head>
   <body>
     <h1>Список Сотрудников</h1>
-    <button type="button" onclick="addEmployees()" id = "addEmployees">Добавить</button>
+    <button type="button" onclick="addRows()" id = "addEmployees">Добавить</button>
+    <button class="hide" type="button" onclick="addRowsInDB('должности')" id = "addRowsInDB">Сохранить</button>
+    <button class="hide" type="button" onclick="canceladdRows()" id = "canceladdRows">Отмена</button>
     <button type="button" onclick="closeWindow('Employee')" id = 'back'>Назад</button>
     <table>
         <!--<col style="width: 40%;"/>-->
@@ -17,16 +19,16 @@
         <thead>
           <tr>
             <th scope="col"><button onclick="sortBy('должности','Код_компании')">Компания</button></th>
-            <th scope="col"><button onclick="sortBy('должности','Наименование_должности')">Телефон</button></th>
+            <th scope="col"><button onclick="sortBy('должности','Наименование_должности')">Наименование должности</button></th>
             <th scope="col"><button onclick="sortBy('должности','Оклад')">Оклад</button></th>
           </tr>
           <tr>
-            <th scope="col"><input type="text" value="" id = "search-input-nameEmployee"></th>
+            <th scope="col"><input type="text" value="" id = "search-input-nameCompany"></th>
             <th scope="col"><input type="text" value="" id = "search-input-jobTitle"></th>
             <th scope="col"><input type="text" value="" id = "search-input-salary"></th>
           </tr>
         </thead>
-        <tbody id="rowTable">
+        <tbody id="rowTable" class="rowTable">
             
         </tbody>
       </table>

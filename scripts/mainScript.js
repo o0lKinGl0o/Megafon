@@ -27,16 +27,19 @@ function openWindow(window){
 function closeWindow(window){
     ipc.send('close'+window+'Window');
 }
+function addContent(results, contentTable){
+    results.forEach(results => {
+        document.getElementById('rowTable').innerHTML+=contentTable;
+    })
+}
 function queryShowTable(table,contentTable){
     connection.query(`SELECT * FROM megafon.${table};`, 
     function (error, results, fields){
-        results.forEach(results => {
-            document.getElementById('rowTable').innerHTML+=contentTable;
-        })
+        addContent(results, contentTable);
     })
 }
-function recordTable(table,elements){
-    connection.query(`SELECT * FROM megafon.${table};`, 
+function recordTable(table,elements,query){
+    connection.query(query, 
     function (error, results, fields){
         results.forEach(results => {
             let isFirstKey = true;
@@ -102,3 +105,111 @@ function save(id){
         })
     }   
 }
+function filter(inputsFilter){
+    for (const key in inputsFilter) {
+        document.getElementById(`${key}`).addEventListener('input', filterTable);  
+        function filterTable() {
+        const searchValue = document.getElementById(key).value.toLowerCase();
+        const rows = document.querySelectorAll('#rowTable tr');
+        rows.forEach(row => {
+            const fieldValue = row.querySelector('.'+inputsFilter[key]).value.toLowerCase();
+            if (fieldValue.includes(searchValue)) {
+            row.style.display = 'table-row';
+            } else {
+            row.style.display = 'none';
+            }
+        });
+        }
+    }
+}
+function addRows(){
+    document.getElementById('rowTable').appendChild(newRow);
+    hideButtonSaveRow();
+}
+function canceladdRows(){
+    document.getElementById('trRec').remove();
+    hideButtonSaveRow();
+}
+function hideButtonSaveRow(){
+    document.getElementById('addEmployees').classList.toggle('hide')
+    document.getElementById('addRowsInDB').classList.toggle('hide')
+    document.getElementById('canceladdRows').classList.toggle('hide')
+}
+function addRowsInDB(table){
+    let lastElems;
+    document.querySelectorAll('.updBut').forEach(results => {
+        lastElems=Number(results.value)+1
+    });
+    let columnQuery=pK+', ';
+    let inputsQuery=lastElems+', ';
+    let isFirstKey = true;
+    let lastElement;
+    for (let key in elements) {
+        lastElement = elements[key];
+    }
+    for (const key in elements) {
+        if (isFirstKey){
+            isFirstKey = false;
+            continue;
+        }
+        if (lastElement!=elements[key]) {
+            columnQuery+=elements[key]+', ';
+            inputsQuery+=`'${document.getElementById(key+'Rec').value}', `;
+        }
+        else {
+            columnQuery+=elements[key]; 
+            inputsQuery+=`'${document.getElementById(key+'Rec').value}'`;
+        }
+    }
+    connection.query(`INSERT INTO megafon.${table} (${columnQuery})
+    values (${inputsQuery});`, function (error, results, fields){
+        if (error){
+            let messageError=`
+                <div class = 'windowError' id ='windowError'>
+                    <h3>Проверьте правильность введенных полей при добавлении в таблицу ${table}</h3>
+                    <button class="" onclick="closeError()">ОК</button>
+                </div>`
+            windowError(messageError);
+        }
+        else results;
+    })
+    for (const key in elements) {
+        document.getElementById(key+'Rec').readOnly=true;
+        document.getElementById(key+'Rec').id = key+lastElems;
+    }
+    hideButtonSaveRow();
+    document.getElementById('saveButRowRec').value=lastElems;
+    document.getElementById('saveButRowRec').id='saveButRow'+lastElems;
+    document.getElementById('cancelUpdRec').value=lastElems;
+    document.getElementById('cancelUpdRec').id='cancelUpd'+lastElems;
+    document.getElementById('cancelUpdButRec').value=lastElems;
+    document.getElementById('cancelUpdButRec').id='cancelUpdBut'+lastElems;
+    document.getElementById('updRec').classList.toggle('hide');
+    document.getElementById('updRec').value=lastElems;
+    document.getElementById('updRec').id='upd'+lastElems;
+    document.getElementById('delColRec').classList.toggle('hide');
+    document.getElementById('delColRec').id='delCol'+lastElems;
+    document.getElementById('delColButRec').value=lastElems;
+    document.getElementById('delColButRec').id='delColBut'+lastElems;
+}
+function delCol(id, table, primKey){
+    connection.query(`DELETE FROM megafon.${table} WHERE ${primKey} = ${id};`, function (error, results, fields){
+        if (error) throw error;
+    });
+    document.getElementById('tr'+id).remove();
+}
+function sortBy(table,valSort){
+    let addRow = document.getElementById('rowTable');
+    addRow.innerHTML = '';
+    connection.query(`SELECT * FROM megafon.${table} ORDER BY ${valSort};`, function (error, results, fields){
+      if (error) throw error;
+      else{
+        results.forEach(results => {
+            document.getElementById('rowTable').innerHTML+=contentTable;
+        });
+      }
+    });
+    let query=`SELECT * FROM megafon.${table} ORDER BY ${valSort};`;
+    recordTable(table,elements,query);
+}
+  
