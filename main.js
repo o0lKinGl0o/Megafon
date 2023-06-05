@@ -79,15 +79,48 @@ function createCompanyWindow() {
     companyWindow.show();
   });
 }
+function createEmployeeWindow() {
+  employeeWindow = new BrowserWindow({
+    modal: true,
+    show: false,
+    hasShadow: false,
+    //devTools: false,
+    //titleBarStyle: `hidden`,
+    //skipTaskbar:false,
+    webPreferences: {
+      //devTools: false,
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+    },
+  });
+  employeeWindow.loadFile("employeeWindow.html");
+  employeeWindow.once("ready-to-show", () => {
+    employeeWindow.maximize();
+    employeeWindow.show();
+  });
+}
 ipcMain.on("openChildWindow", (event, arg) => {
   createChildWindow();
   mainWindow.hide();
 });
 ipcMain.on("openCompany", (event, arg) => {
   createCompanyWindow();
-  //childWindow.hide();
+  childWindow.hide();
 });
 ipcMain.on("closeChildWindow", (event, arg) => {
   childWindow.close();
   mainWindow.show();
+});
+ipcMain.on("closeCompanyWindow", (event, arg) => {
+  companyWindow.close();
+  childWindow.show();
+});
+ipcMain.on("openEmployee", (event, arg) => {
+  createEmployeeWindow();
+  companyWindow.hide();
+});
+ipcMain.on("closeEmployeeWindow", (event, arg) => {
+  employeeWindow.close();
+  companyWindow.show();
 });

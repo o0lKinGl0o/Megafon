@@ -23,3 +23,6 @@
 body{
     font-family: "Intro";
 }
+.hide{
+    display: none;
+}

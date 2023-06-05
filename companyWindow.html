@@ -7,8 +7,18 @@
   </head>
   <body>
     <h1>Информация о компании</h1>
-    <button type="button" class="" onclick="">Редактировать</button>
-    <script src="scripts/consts.js"></script>
+    <p>Название компании: <input type="text" value="" readonly id = "nameCompany"></p>
+    <p>ФИО директора: <input type="text" value="" readonly id = "director"></p>
+    <p>Телефон компании: <input type="text" value="" readonly id = "phoneCompany"></p>
+    <p>Адрес компании: <input type="text" value="" readonly id = "adressCompany"></p>
+    <button type="button" onclick="updInfoCompany(false)" id = "updInfoCompany">Редактировать</button>
+    <button type="button" class = "hide" onclick="saveUpdInfoCompany()" id = "saveUpdInfoCompany">Сохранить</button>
+    <button type="button" class = "hide" onclick="updInfoCompany(true)" id = "cancelUpdInfoCompany">Отмена</button>
+    <button type="button" onclick="openWindow('Employee')" id = "employee">Сотрудники</button>
+    <button type="button" onclick="" id = "provider">Поставщики</button>
+    <button type="button" onclick="closeWindow('Company')" id = 'back'>Назад</button>
     <script src="scripts/mainScript.js"></script>
+    <script src="scripts/consts.js"></script>
+    <script src="scripts/contentInfCompany.js"></script>
   </body>
 </html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style/main.css">
+    <title>Megafon</title>
+  </head>
+  <body>
+    <h1>Список Сотрудников</h1>
+    <button type="button" onclick="addEmployees()" id = "addEmployees">Добавить</button>
+    <button type="button" onclick="closeWindow('Employee')" id = 'back'>Назад</button>
+    <table>
+        <!--<col style="width: 40%;"/>-->
+        <col/>
+        <col/>
+        <col/>
+        <thead>
+          <tr>
+            <th scope="col"><button onclick="sortBy('должности','Код_компании')">Компания</button></th>
+            <th scope="col"><button onclick="sortBy('должности','Наименование_должности')">Телефон</button></th>
+            <th scope="col"><button onclick="sortBy('должности','Оклад')">Оклад</button></th>
+          </tr>
+          <tr>
+            <th scope="col"><input type="text" value="" id = "search-input-nameEmployee"></th>
+            <th scope="col"><input type="text" value="" id = "search-input-jobTitle"></th>
+            <th scope="col"><input type="text" value="" id = "search-input-salary"></th>
+          </tr>
+        </thead>
+        <tbody id="rowTable">
+            
+        </tbody>
+      </table>
+    <script src="scripts/mainScript.js"></script>
+    <script src="scripts/consts.js"></script>
+    <script src="scripts/contentEmployees.js"></script>
+  </body>
+</html>

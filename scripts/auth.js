@@ -1,4 +1,3 @@
-let connection = conFunc();
 function authorisation() {
     connection.query(`SELECT * FROM megafon.auth WHERE login = "${document.getElementById("exampleInputEmail").value}" AND passwd = "${document.getElementById("exampleInputPassword").value}";`, 
     function (error, results, fields){
