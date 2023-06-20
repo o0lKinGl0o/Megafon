@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style/main.css">
+    <title>Megafon</title>
+  </head>
+  <body>
+    <h1>Список товаров</h1>
+    <button type="button" onclick="addRows()" id = "addRows">Добавить</button>
+    <button class="hide" type="button" onclick="addRowsInDB('товары')" id = "addRowsInDB">Сохранить</button>
+    <button class="hide" type="button" onclick="canceladdRows()" id = "canceladdRows">Отмена</button>
+    <button type="button" onclick="closeWindow('Goods')" id = 'back'>Назад</button>
+    <table>
+        <!--<col style="width: 40%;"/>-->
+        <col/>
+        <col/>
+        <col/>
+        <thead>
+          <tr>
+            <th scope="col"><button onclick="sortBy('товары','Название')">Название</button></th>
+            <th scope="col"><button onclick="sortBy('товары','Код_компании')">Компания</button></th>
+            <th scope="col"><button onclick="sortBy('товары','Характеристики')">Характеристики</button></th>
+            <th scope="col"><button onclick="sortBy('товары','Фото')">Фото</button></th>
+            <th scope="col"><button onclick="sortBy('товары','Цена')">Цена</button></th>
+            <th scope="col"><button onclick="sortBy('товары','Производитель')">Производитель</button></th>
+            <th scope="col"><button onclick="sortBy('товары','Кол_во_на_складе')">Кол во на складе</button></th>
+            <th scope="col"><button onclick="sortBy('товары','Тип_товара')">Тип товара</button></th>
+          </tr>
+          <tr>
+            <th scope="col"><input type="text" value="" id = "search-input-nameGood"></th>
+            <th scope="col"><input type="text" value="" id = "search-input-idCompany"></th>
+            <th scope="col"><input type="text" value="" id = "search-input-characteristics"></th>
+            <th scope="col"><!--<input type="text" value="" id = "search-input-photo">--></th>
+            <th scope="col"><input type="text" value="" id = "search-input-price"></th>
+            <th scope="col"><input type="text" value="" id = "search-input-manufacturer"></th>
+            <th scope="col"><input type="text" value="" id = "search-input-quantityInStock"></th>
+            <th scope="col"><!--<input type="text" value="" id = "search-input-typeGood">--></th>
+          </tr>
+        </thead>
+        <tbody id="rowTable" class="rowTable">
+            
+        </tbody>
+      </table>
+    <script src="scripts/mainScript.js"></script>
+    <script src="scripts/consts.js"></script>
+    <script src="scripts/contentGoods.js"></script>
+  </body>
+</html>
