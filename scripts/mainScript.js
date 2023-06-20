@@ -84,6 +84,8 @@ function recordTable(table,elements,query,pK){
                     document.getElementById(img.id).src=result[img.column];
                     let idSelect = img.id.replace(/Rec/g, '');
                     document.getElementById(img.id).id=idSelect+firstKey;
+                    let idImgUpd = img.idUpd.replace(/Rec/g, '');
+                    document.getElementById(img.idUpd).id=idImgUpd+firstKey;
                 })
             } catch {}
         }) 
@@ -132,6 +134,22 @@ function save(id){
         })
     }
     try{
+        imagesQuery.forEach(img=>{
+            let idImgUpd = img.idUpd.replace(/Rec/g, '')+id;
+            connection.query(`UPDATE megafon.${table} SET 
+            ${img.column} = '${document.getElementById(idImgUpd).value}' 
+            WHERE ${firstKey}=${id};`, 
+            function (error, results, fields){
+                if (error) {
+                    let messageError = `
+                    <div class = 'windowError' id ='windowError'>
+                        <h3>Проверьте правильность введенного поля ${select.columnGoods}</h3>
+                        <button class="" onclick="closeError()">ОК</button>
+                    </div>`;
+                    windowError(messageError);
+                };
+            })
+        })
         selectsQuery.forEach(select=>{
             let idSelect = select.id.replace(/Rec/g, '')+id;
             connection.query(`UPDATE megafon.${table} SET 

@@ -44,7 +44,7 @@ const selectsQuery=
                     ];
 const imagesQuery= 
                     [
-                        {id:'photoRec', column:'Фото', table:'товары'}
+                        {id:'photoRec', column:'Фото', table:'товары', idUpd: 'photoRecUpd'}
                     ];
 const newPhoto = document.createElement('input');
 newPhoto.id='photoRec';
