@@ -95,12 +95,12 @@ function updCol(id){
     for (const key in elements) {
         document.getElementById(key + id).readOnly = false;
     }
-    //try{
+    try{
         imagesQuery.forEach(img=>{
             let idFile = img.id.replace(/Rec/g, '')+'Upd'+id;
             document.getElementById(idFile).classList.toggle('hide');
         })
-    //}catch  {}
+    }catch  {}
     hideButton(id);
 }
 function hideButton(id){
@@ -136,8 +136,10 @@ function save(id){
     try{
         imagesQuery.forEach(img=>{
             let idImgUpd = img.idUpd.replace(/Rec/g, '')+id;
+            let pathPhoto = document.getElementById(idImgUpd).value;
+            let cleanedPath = pathPhoto.replace(/^.*\\/, '');
             connection.query(`UPDATE megafon.${table} SET 
-            ${img.column} = '${document.getElementById(idImgUpd).value}' 
+            ${img.column} = '${cleanedPath}' 
             WHERE ${firstKey}=${id};`, 
             function (error, results, fields){
                 if (error) {
@@ -149,7 +151,13 @@ function save(id){
                     windowError(messageError);
                 };
             })
+            let idImg = img.id.replace(/Rec/g, '')+id;
+            document.getElementById(idImg).src=cleanedPath;
+            console.log(document.getElementById(idImgUpd))
+            document.getElementById(idImgUpd).classList.add('hide');
         })
+    }catch{}
+    try{
         selectsQuery.forEach(select=>{
             let idSelect = select.id.replace(/Rec/g, '')+id;
             connection.query(`UPDATE megafon.${table} SET 
@@ -198,9 +206,9 @@ function canceladdRows(){
     hideButtonSaveRow();
 }
 function hideButtonSaveRow(){
-    document.getElementById('addRows').classList.toggle('hide')
-    document.getElementById('addRowsInDB').classList.toggle('hide')
-    document.getElementById('canceladdRows').classList.toggle('hide')
+    document.getElementById('addRows').classList.toggle('hide');
+    document.getElementById('addRowsInDB').classList.toggle('hide');
+    document.getElementById('canceladdRows').classList.toggle('hide');
 }
 function addRowsInDB(table){
     let lastElems;
@@ -220,15 +228,11 @@ function addRowsInDB(table){
         })
     } catch{}
     try{
-        if (selectsQuery) {
-            selectsQuery.forEach(opt=>{
-                columnQuery+=opt.columnGoods+", ";
-                inputsQuery+="'"+document.getElementById(opt.id).value+"', ";
+        selectsQuery.forEach(opt=>{
+            columnQuery+=opt.columnGoods+", ";
+            inputsQuery+="'"+document.getElementById(opt.id).value+"', ";
             })
-        };
-    } catch (error){
-        throw error
-    }
+    } catch {}
     let isFirstKey = true;
     let lastElement;
     for (let key in elements) {
@@ -257,7 +261,7 @@ function addRowsInDB(table){
                     <h3>Проверьте правильность введенных полей при добавлении в таблицу ${table}</h3>
                     <button class="" onclick="closeError()">ОК</button>
                 </div>`
-            //windowError(messageError);
+            windowError(messageError);
             throw error;
         }
         else results;
