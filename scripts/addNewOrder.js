@@ -8,7 +8,11 @@ function openChildWindow(){
     `<div class="transbox" id="transbox">
         <div class="contentChildWindow">
             <button type="button" onclick="addRows('rowTableOrder', newRowChild, true,selectsQueryChild)" id = "addRowsChild">Добавить</button>
+<<<<<<< HEAD
             <button class="hide" type="button" onclick="addRowsInOrderChild(lastElems)" id = "addRowsInDBChild">Сохранить</button>
+=======
+            <button class="hide" type="button" onclick="addRowsInDBChildTable('товары_в_покупке','код_заказа',${lastElems},selectsQueryChild)" id = "addRowsInDBChild">Сохранить</button>
+>>>>>>> 4f178032161e254dfb5e53268ee9e1f4083abeee
             <button class="hide" type="button" onclick="canceladdRows(true)" id = "canceladdRowsChild">Отмена</button>
             <table>
                 <!--<col style="width: 40%;"/>-->
@@ -32,6 +36,12 @@ function openChildWindow(){
     </div>`;
     document.getElementById('transbox').classList.toggle('transboxActive');
 }
+<<<<<<< HEAD
 function addRowsInDBChildTable(){
 
 }
+=======
+//addNewOrderRows('rowTableOrder', newRowChild, true,selectsQueryChild){
+
+//}
+>>>>>>> 4f178032161e254dfb5e53268ee9e1f4083abeee

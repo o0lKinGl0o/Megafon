@@ -9,7 +9,6 @@ const contentTable=`<tr id="trRec" class="">
                         </td>
                         <td><input type="date" class="dateOrderRec" value="" readonly id="dateOrderRec"></td>
                         <td><input type="text" class="сashPayRec" value="" readonly id="сashPayRec"></td>
-                        <!--<td><input type="text" class="nameEmployeeRec" value="" readonly" id="nameEmployeeRec"></td>-->
                         <td>
                             <select id="nameEmployeeRec">
                             </select>
