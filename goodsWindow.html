@@ -7,8 +7,8 @@
   </head>
   <body>
     <h1>Список товаров</h1>
-    <button type="button" onclick="addRows()" id = "addRows">Добавить</button>
-    <button class="hide" type="button" onclick="addRowsInDB('товары')" id = "addRowsInDB">Сохранить</button>
+    <button type="button" onclick="addRows('rowTable', newRow,false,selectsQuery)" id = "addRows">Добавить</button>
+    <button class="hide" type="button" onclick="addRowsInDB('товары', false)" id = "addRowsInDB">Сохранить</button>
     <button class="hide" type="button" onclick="canceladdRows()" id = "canceladdRows">Отмена</button>
     <button type="button" onclick="closeWindow('Goods')" id = 'back'>Назад</button>
     <table>
@@ -19,7 +19,6 @@
         <thead>
           <tr>
             <th scope="col"><button onclick="sortBy('товары','Название')">Название</button></th>
-            <th scope="col"><button onclick="sortBy('товары','Код_компании')">Компания</button></th>
             <th scope="col"><button onclick="sortBy('товары','Характеристики')">Характеристики</button></th>
             <th scope="col"><button onclick="sortBy('товары','Фото')">Фото</button></th>
             <th scope="col"><button onclick="sortBy('товары','Цена')">Цена</button></th>
@@ -29,7 +28,6 @@
           </tr>
           <tr>
             <th scope="col"><input type="text" value="" id = "search-input-nameGood"></th>
-            <th scope="col"><input type="text" value="" id = "search-input-idCompany"></th>
             <th scope="col"><input type="text" value="" id = "search-input-characteristics"></th>
             <th scope="col"><!--<input type="text" value="" id = "search-input-photo">--></th>
             <th scope="col"><input type="text" value="" id = "search-input-price"></th>
@@ -42,8 +40,9 @@
             
         </tbody>
       </table>
-    <script src="scripts/mainScript.js"></script>
-    <script src="scripts/consts.js"></script>
-    <script src="scripts/contentGoods.js"></script>
+      <script src="scripts/consts.js"></script>
+      <script src="scripts/showTable.js"></script>
+      <script src="scripts/mainScript.js"></script>
+      <script src="scripts/contentGoods.js"></script>
   </body>
 </html>

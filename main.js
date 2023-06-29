@@ -163,6 +163,27 @@ function createGoodsWindow() {
     goodsWindow.show();
   });
 }
+function createOrdersWindow() {
+  ordersWindow = new BrowserWindow({
+    modal: true,
+    show: false,
+    hasShadow: false,
+    //devTools: false,
+    //titleBarStyle: `hidden`,
+    //skipTaskbar:false,
+    webPreferences: {
+      //devTools: false,
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+    },
+  });
+  ordersWindow.loadFile("ordersWindow.html");
+  ordersWindow.once("ready-to-show", () => {
+    ordersWindow.maximize();
+    ordersWindow.show();
+  });
+}
 ipcMain.on("openChildWindow", (event, arg) => {
   createChildWindow();
   mainWindow.hide();
@@ -195,6 +216,10 @@ ipcMain.on("openGoods", (event, arg) => {
   createGoodsWindow();
   childWindow.hide();
 });
+ipcMain.on("openOrders", (event, arg) => {
+  createOrdersWindow();
+  childWindow.hide();
+});
 ipcMain.on("closeClientsWindow", (event, arg) => {
   clientsWindow.close();
   childWindow.show();
@@ -209,5 +234,9 @@ ipcMain.on("closeProvidersWindow", (event, arg) => {
 });
 ipcMain.on("closeGoodsWindow", (event, arg) => {
   goodsWindow.close();
+  childWindow.show();
+});
+ipcMain.on("closeOrdersWindow", (event, arg) => {
+  ordersWindow.close();
   childWindow.show();
 });

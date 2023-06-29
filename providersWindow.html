@@ -7,8 +7,8 @@
   </head>
   <body>
     <h1>Список поставщиков</h1>
-    <button type="button" onclick="addRows()" id = "addRows">Добавить</button>
-    <button class="hide" type="button" onclick="addRowsInDB('поставщики')" id = "addRowsInDB">Сохранить</button>
+    <button type="button" onclick="addRows('rowTable', newRow,false,selectsQuery)" id = "addRows">Добавить</button>
+    <button class="hide" type="button" onclick="addRowsInDB('поставщики', false)" id = "addRowsInDB">Сохранить</button>
     <button class="hide" type="button" onclick="canceladdRows()" id = "canceladdRows">Отмена</button>
     <button type="button" onclick="closeWindow('Providers')" id = 'back'>Назад</button>
     <table>
@@ -19,12 +19,10 @@
         <thead>
           <tr>
             <th scope="col"><button onclick="sortBy('поставщики','Название_компании_поставщика')">Название компании-поставщика</button></th>
-            <th scope="col"><button onclick="sortBy('поставщики','Код_компании')">Компания</button></th>
             <th scope="col"><button onclick="sortBy('поставщики','Контактный_телефон')">Контактный телефон</button></th>
           </tr>
           <tr>
             <th scope="col"><input type="text" value="" id = "search-input-nameCompanyProvider"></th>
-            <th scope="col"><input type="text" value="" id = "search-input-company"></th>
             <th scope="col"><input type="text" value="" id = "search-input-contactPhone"></th>
           </tr>
         </thead>
@@ -32,8 +30,9 @@
             
         </tbody>
       </table>
-    <script src="scripts/mainScript.js"></script>
-    <script src="scripts/consts.js"></script>
-    <script src="scripts/contentProviders.js"></script>
+      <script src="scripts/consts.js"></script>
+      <script src="scripts/showTable.js"></script>
+      <script src="scripts/mainScript.js"></script>
+      <script src="scripts/contentProviders.js"></script>
   </body>
 </html>

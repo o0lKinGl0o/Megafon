@@ -7,7 +7,7 @@
   </head>
   <body>
     <h1>Список сотрудников</h1>
-    <button type="button" onclick="addRows()" id = "addRows">Добавить</button>
+    <button type="button" onclick="addRows('rowTable', newRow, false, selectsQuery)" id = "addRows">Добавить</button>
     <button class="hide" type="button" onclick="addRowsInDB('сотрудники')" id = "addRowsInDB">Сохранить</button>
     <button class="hide" type="button" onclick="canceladdRows()" id = "canceladdRows">Отмена</button>
     <button type="button" onclick="closeWindow('Employee')" id = 'back'>Назад</button>
@@ -18,7 +18,6 @@
         <col/>
         <thead>
           <tr>
-            <th scope="col"><button onclick="sortBy('сотрудники','Код_компании')">Наименование компании</button></th>
             <th scope="col"><button onclick="sortBy('сотрудники','ФИО_сотрудника')">ФИО сотрудника</button></th>
             <th scope="col"><button onclick="sortBy('сотрудники','Код_должности')">Должность</button></th>
             <th scope="col"><button onclick="sortBy('сотрудники','Дата_рождения')">Дата рождения</button></th>
@@ -26,7 +25,6 @@
             <th scope="col"><button onclick="sortBy('сотрудники','Адрес')">Адрес</button></th>
           </tr>
           <tr>
-            <th scope="col"><input type="text" value="" id = "search-input-idCompany"></th>
             <th scope="col"><input type="text" value="" id = "search-input-nameEmploee"></th>
             <th scope="col"><input type="text" value="" id = "search-input-idJobTitle"></th>
             <th scope="col"><input type="text" value="" id = "search-input-dateOfBorn"></th>
@@ -38,8 +36,9 @@
             
         </tbody>
       </table>
-    <script src="scripts/mainScript.js"></script>
-    <script src="scripts/consts.js"></script>
-    <script src="scripts/contentEmployees.js"></script>
+      <script src="scripts/consts.js"></script>
+      <script src="scripts/showTable.js"></script>
+      <script src="scripts/mainScript.js"></script>
+      <script src="scripts/contentEmployees.js"></script>
   </body>
 </html>
