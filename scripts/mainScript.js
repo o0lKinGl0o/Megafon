@@ -1,19 +1,12 @@
-function conFunc(){
-    const connection = mysql.createConnection({
-      host     : '127.0.0.1',
-      user     : 'root',
-      password : 'root',
-      database : 'megafon',
-      dateStrings: true
-    });
-    connection.connect();
-    return connection;
-}
 function windowError(messageError){
-    document.body.innerHTML+='<div class="transbox" id="transbox">'+messageError+'</div>';
-    document.getElementById('transbox').classList.toggle('transboxActive');
+    document.body.innerHTML+='<div class="ErrorWindow" id="ErrorWindow">'+messageError+'</div>';
+    document.getElementById('ErrorWindow').classList.toggle('ErrorWindowActive');
 }
 function closeError(){
+    document.getElementById('ErrorWindow').remove();
+    location.reload();
+}
+function closeChildWindow(){
     document.getElementById('transbox').remove();
     location.reload();
 }
@@ -27,88 +20,40 @@ function openWindow(window){
 function closeWindow(window){
     ipc.send('close'+window+'Window');
 }
-function addContent(results, contentTable){
+function addContent(results, contentTable,idTable){
     results.forEach(results => {
-        document.getElementById('rowTable').innerHTML+=contentTable;
+        document.getElementById(idTable).innerHTML+=contentTable;
     })
 }
-function queryShowTable(table,contentTable){
-    connection.query(`SELECT * FROM megafon.${table};`, 
-    function (error, results, fields){
-        addContent(results, contentTable);
-    })
-}
-function recordTable(table,elements,query,pK){
-    connection.query(query, 
-    function (error, results, fields){
-        results.forEach(result => {
-            let isFirstKey = true;
-            let firstKey;
-            for (const key in elements) {
-                let x = elements[key]
-                if (isFirstKey) {
-                    isFirstKey = false;
-                    document.getElementById(key+'Rec').id='tr'+result[x];
-                    document.getElementById('updRec').value=result[x];
-                    document.getElementById('updRec').id='upd'+result[x];
-                    document.getElementById('saveButRowRec').value=result[x];
-                    document.getElementById('saveButRowRec').id='saveButRow'+result[x];
-                    document.getElementById('cancelUpdRec').id='cancelUpd'+result[x];
-                    document.getElementById('cancelUpdButRec').value=result[x];
-                    document.getElementById('cancelUpdButRec').id='cancelUpdBut'+result[x];
-                    document.getElementById('delColRec').id='delCol'+result[x];
-                    document.getElementById('delColButRec').value=result[x];
-                    document.getElementById('delColButRec').id='delColBut'+result[x];
-                    firstKey = result[x];
-                    continue;
-                }
-                document.getElementById(key+'Rec').value+=result[x];
-                document.getElementById(key+'Rec').id=key+firstKey;
-            }
-            try{
-                if (selectsQuery){
-                    selectsQuery.forEach(selectElement=>{
-                        document.getElementById(selectElement.id).innerHTML=`<option selected>${result[selectElement.columnGoods]}</option>`;
-                        let idSelect = selectElement.id.replace(/Rec/g, '');
-                        document.getElementById(selectElement.id).id=idSelect+firstKey;
-                        connection.query(selectElement.query, function(error, resultsOpt, fields){
-                            resultsOpt.forEach(resultOpt=>{
-                                document.getElementById(idSelect+firstKey).innerHTML+=`<option>${resultOpt[selectElement.column]}</option>`;
-                            })
-                        })
-                    })
-                }
-            } catch {}
-            try{
-                imagesQuery.forEach(img=>{
-                    document.getElementById(img.id).src=result[img.column];
-                    let idSelect = img.id.replace(/Rec/g, '');
-                    document.getElementById(img.id).id=idSelect+firstKey;
-                })
-            } catch {}
-        }) 
-    })
-}
-function updCol(id){
+function updCol(id, elements, flag){
+    let isFirstKey=true;
     for (const key in elements) {
+        if (isFirstKey){
+            isFirstKey=false;
+            continue;
+        }
         document.getElementById(key + id).readOnly = false;
     }
-    //try{
+    try{
         imagesQuery.forEach(img=>{
             let idFile = img.id.replace(/Rec/g, '')+'Upd'+id;
             document.getElementById(idFile).classList.toggle('hide');
         })
-    //}catch  {}
-    hideButton(id);
+    }catch  {}
+    hideButton(id, flag);
 }
-function hideButton(id){
-    document.getElementById('upd'+id).classList.toggle('hide');
-    document.getElementById('saveButRow'+id).classList.toggle('hide');
-    document.getElementById('cancelUpd'+id).classList.toggle('hide');
-    document.getElementById('delColBut'+id).classList.toggle('hide');
+function hideButton(id, flag){
+    let child='';
+    if (flag) child='Child';
+    console.log(child);
+    console.log('upd'+child+id);
+    document.getElementById('upd'+child+id).classList.toggle('hide');
+    document.getElementById('saveButRow'+child+id).classList.toggle('hide');
+    document.getElementById('cancelUpd'+child+id).classList.toggle('hide');
+    document.getElementById('delColBut'+child+id).classList.toggle('hide');
 }
-function save(id){
-    updCol(id);    
+function save(id, elements, flag, table,selectsQuery){
+    hideButton(id, flag);   
     let isFirstKey = true;
     let firstKey;
     for (const key in elements) {
@@ -117,6 +62,9 @@ function save(id){
             firstKey = elements[key];
             continue;
         }
+        console.log(`UPDATE megafon.${table} SET 
+        ${elements[key]} = '${document.getElementById(key+id).value}' 
+        WHERE ${firstKey}=${id};`);
         connection.query(`UPDATE megafon.${table} SET 
         ${elements[key]} = '${document.getElementById(key+id).value}' 
         WHERE ${firstKey}=${id};`, 
@@ -131,6 +79,29 @@ function save(id){
             };
         })
     }
+    try{
+        imagesQuery.forEach(img=>{
+            let idImgUpd = img.idUpd.replace(/Rec/g, '')+id;
+            let pathPhoto = document.getElementById(idImgUpd).value;
+            let cleanedPath = pathPhoto.replace(/^.*\\/, '');
+            connection.query(`UPDATE megafon.${table} SET 
+            ${img.column} = '${cleanedPath}' 
+            WHERE ${firstKey}=${id};`, 
+            function (error, results, fields){
+                if (error) {
+                    let messageError = `
+                    <div class = 'windowError' id ='windowError'>
+                        <h3>Проверьте правильность введенного поля ${select.columnGoods}</h3>
+                        <button class="" onclick="closeError()">ОК</button>
+                    </div>`;
+                    windowError(messageError);
+                };
+            })
+            let idImg = img.id.replace(/Rec/g, '')+id;
+            document.getElementById(idImg).src=cleanedPath;
+            document.getElementById(idImgUpd).classList.add('hide');
+        })
+    }catch{}
     try{
         selectsQuery.forEach(select=>{
             let idSelect = select.id.replace(/Rec/g, '')+id;
@@ -167,24 +138,28 @@ function filter(inputsFilter){
         }
     }
 }
-function addRows(){
-    document.getElementById('rowTable').appendChild(newRow);
+function addRows(table, newRow, flag,selectsQuery){
+    document.getElementById(table).appendChild(newRow);
     const selectElement = document.querySelector('select');
     if (selectElement) {
-        addSelect();
+        addSelect(selectsQuery);
     }
-    hideButtonSaveRow();
+    hideButtonSaveRow(flag);
 }
-function canceladdRows(){
-    document.getElementById('trRec').remove();
-    hideButtonSaveRow();
+function canceladdRows(flag){
+    let child='';
+    if (flag) child='Child';
+    document.getElementById('tr'+child+'Rec').remove();
+    hideButtonSaveRow(flag);
 }
-function hideButtonSaveRow(){
-    document.getElementById('addRows').classList.toggle('hide')
-    document.getElementById('addRowsInDB').classList.toggle('hide')
-    document.getElementById('canceladdRows').classList.toggle('hide')
+function hideButtonSaveRow(flag){
+    let child='';
+    if (flag) child='Child';
+    document.getElementById('addRows'+child).classList.toggle('hide');
+    document.getElementById('addRowsInDB'+child).classList.toggle('hide');
+    document.getElementById('canceladdRows'+child).classList.toggle('hide');
 }
-function addRowsInDB(table){
+function addRowsInDB(table, flag){
     let lastElems;
     let cleanedPath;
     document.querySelectorAll('.updBut').forEach(results => {
@@ -202,15 +177,11 @@ function addRowsInDB(table){
         })
     } catch{}
     try{
-        if (selectsQuery) {
-            selectsQuery.forEach(opt=>{
-                columnQuery+=opt.columnGoods+", ";
-                inputsQuery+="'"+document.getElementById(opt.id).value+"', ";
+        selectsQuery.forEach(opt=>{
+            columnQuery+=opt.columnGoods+", ";
+            inputsQuery+="'"+document.getElementById(opt.id).value+"', ";
             })
-        };
-    } catch (error){
-        throw error
-    }
+    } catch {}
     let isFirstKey = true;
     let lastElement;
     for (let key in elements) {
@@ -239,7 +210,7 @@ function addRowsInDB(table){
                     <h3>Проверьте правильность введенных полей при добавлении в таблицу ${table}</h3>
                     <button class="" onclick="closeError()">ОК</button>
                 </div>`
-            //windowError(messageError);
+            windowError(messageError);
             throw error;
         }
         else results;
@@ -248,20 +219,22 @@ function addRowsInDB(table){
         document.getElementById(key+'Rec').readOnly=true;
         document.getElementById(key+'Rec').id = key+lastElems;
     }
-    hideButtonSaveRow();
-    document.getElementById('saveButRowRec').value=lastElems;
-    document.getElementById('saveButRowRec').id='saveButRow'+lastElems;
-    document.getElementById('cancelUpdRec').value=lastElems;
-    document.getElementById('cancelUpdRec').id='cancelUpd'+lastElems;
-    document.getElementById('cancelUpdButRec').value=lastElems;
-    document.getElementById('cancelUpdButRec').id='cancelUpdBut'+lastElems;
-    document.getElementById('updRec').classList.toggle('hide');
-    document.getElementById('updRec').value=lastElems;
-    document.getElementById('updRec').id='upd'+lastElems;
-    document.getElementById('delColRec').classList.toggle('hide');
-    document.getElementById('delColRec').id='delCol'+lastElems;
-    document.getElementById('delColButRec').value=lastElems;
-    document.getElementById('delColButRec').id='delColBut'+lastElems;
+    hideButtonSaveRow(flag);
+    let child='';
+    if (flag) child='Child';
+    document.getElementById('saveButRow'+child+'Rec').value=lastElems;
+    document.getElementById('saveButRow'+child+'Rec').id='saveButRow'+lastElems;
+    document.getElementById('cancelUpd'+child+'Rec').value=lastElems;
+    document.getElementById('cancelUpd'+child+'Rec').id='cancelUpd'+lastElems;
+    document.getElementById('cancelUpdBut'+child+'Rec').value=lastElems;
+    document.getElementById('cancelUpdBut'+child+'Rec').id='cancelUpdBut'+lastElems;
+    document.getElementById('upd'+child+'Rec').classList.toggle('hide');
+    document.getElementById('upd'+child+'Rec').value=lastElems;
+    document.getElementById('upd'+child+'Rec').id='upd'+lastElems;
+    document.getElementById('delCol'+child+'Rec').classList.toggle('hide');
+    document.getElementById('delCol'+child+'Rec').id='delCol'+lastElems;
+    document.getElementById('delColBut'+child+'Rec').value=lastElems;
+    document.getElementById('delColBut'+child+'Rec').id='delColBut'+lastElems;
     try{
         imagesQuery.forEach(img=>{
             let idFile = img.id.replace(/Rec/g, '')+'Upd'+lastElems;
@@ -275,12 +248,16 @@ function addRowsInDB(table){
             document.getElementById(idPhoto).style.width='50px';
         })
     }catch{}
+    location.reload();
 }
-function delCol(id, table, primKey){
+function delCol(id, table, primKey,flag){
+    let child='';
+    if (flag) child='Child';
+    console.log(`DELETE FROM megafon.${table} WHERE ${primKey} = ${id};`);
     connection.query(`DELETE FROM megafon.${table} WHERE ${primKey} = ${id};`, function (error, results, fields){
         if (error) throw error;
     });
-    document.getElementById('tr'+id).remove();
+    document.getElementById('tr'+child+id).remove();
 }
 function sortBy(table,valSort){
     let addRow = document.getElementById('rowTable');
@@ -294,9 +271,9 @@ function sortBy(table,valSort){
       }
     });
     let query=`SELECT * FROM megafon.${table} ORDER BY ${valSort};`;
-    recordTable(table,elements,query);
+    recordTable(elements,query);
 }
-function addSelect(){
+function addSelect(selectsQuery){
     selectsQuery.forEach(selectOpt=>{
         connection.query(selectOpt.query, function(error, results, fields){
             results.forEach(result=>{

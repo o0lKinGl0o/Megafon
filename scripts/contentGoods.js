@@ -1,7 +1,7 @@
 const contentTable=`<tr id="trRec" class="">
                         <td><input type="text" class="nameGoodRec" value="" readonly id="nameGoodRec"></td>
                         <!--<td><input type="text" class="idCompanyRec" value="" readonly id="idCompanyRec"></td>-->
-                        <td>
+                        <td class="hide">
                             <select id="idCompanyRec">
                             </select>
                         </td>
@@ -18,11 +18,11 @@ const contentTable=`<tr id="trRec" class="">
                             </select>
                         </td>
                         <td>
-                            <button type="button" id="updRec" onclick="updCol(this.value)" value="">Редактировать</button>
-                            <button id="saveButRowRec" class="hide" type="button" onclick="save(this.value)" value="">Сохранить</button>
+                            <button type="button" id="updRec" onclick="updCol(this.value, elements, false)" value="">Редактировать</button>
+                            <button id="saveButRowRec" class="hide" type="button" onclick="save(this.value, elements, false ,table)" value="">Сохранить</button>
                         </td>
                         <td id="cancelUpdRec" class="hide"><button class="updBut" id="cancelUpdButRec" type="button" onclick="hideButton(this.value)" value="">Отмена</button></td>
-                        <td id="delColRec"><button type="button" id="delColButRec" onclick="delCol(this.value,'товары', 'Код_товара')" value="">Удалить</button></td>
+                        <td id="delColRec"><button type="button" id="delColButRec" onclick="delCol(this.value,'товары', 'Код_товара', false)" value="">Удалить</button></td>
                     </tr>`;
 const elements={
                     'tr': 'Код_товара',
@@ -44,7 +44,7 @@ const selectsQuery=
                     ];
 const imagesQuery= 
                     [
-                        {id:'photoRec', column:'Фото', table:'товары'}
+                        {id:'photoRec', column:'Фото', table:'товары', idUpd: 'photoRecUpd'}
                     ];
 const newPhoto = document.createElement('input');
 newPhoto.id='photoRec';
@@ -54,7 +54,7 @@ newRow.id='trRec';
 newRow.innerHTML = `
     <td><input type="text" class="nameGoodRec" value="" id="nameGoodRec"></td>
     <!--<td><input type="text" class="idCompanyRec" value="" id="idCompanyRec"></td>-->
-    <td>
+    <td  class="hide">
         <select id="idCompanyRec">
         </select>
     </td>
@@ -70,15 +70,15 @@ newRow.innerHTML = `
         </select>
     </td>    
     <td>
-        <button type="button" id="updRec" class="hide" onclick="updCol(this.value)" value="">Редактировать</button>
-        <button id="saveButRowRec" class="hide" type="button" onclick="save(this.value)" value="">Сохранить</button>
+        <button type="button" id="updRec" class="hide" onclick="updCol(this.value, elements, false)" value="">Редактировать</button>
+        <button id="saveButRowRec" class="hide" type="button" onclick="save(this.value, elements, false, table, selectsQuery)" value="">Сохранить</button>
     </td>
     <td id="cancelUpdRec" class="hide"><button id="cancelUpdButRec" type="button" onclick="hideButton(this.value)" value="">Отмена</button></td>
     <td id="delColRec" class="hide"><button type="button" id="delColButRec" onclick="delCol(this.value, 'товары', 'Код_товара')" value="">Удалить</button></td>
   `;
 const pK='Код_товара'; 
-queryShowTable(table,contentTable);
-recordTable(table,elements,query,pK);
+queryShowTable(contentTable,query,'rowTable');
+recordTable(elements,query,pK,false,selectsQuery);
 const inputsFilter={
     'search-input-nameGood': 'nameGoodRec',
     //'search-input-idCompany': 'idCompanyRec',

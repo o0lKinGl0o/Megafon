@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style/main.css">
+    <title>Megafon</title>
+  </head>
+  <body>
+    <h1>Список заказов</h1>
+    <button type="button" onclick="addRows('rowTable', newRow,false,selectsQuery)" id = "addRows">Добавить</button>
+    <button class="hide" type="button" onclick="addRowsInDB('заказы', false)" id = "addRowsInDB">Сохранить</button>
+    <button class="hide" type="button" onclick="canceladdRows()" id = "canceladdRows">Отмена</button>
+    <button type="button" onclick="closeWindow('Orders')" id = 'back'>Назад</button>
+    <table>
+        <!--<col style="width: 40%;"/>-->
+        <col/>
+        <col/>
+        <col/>
+        <thead>
+          <tr>
+            <th scope="col"><button onclick="sortBy('заказы','Код_клиента')">ФИО клиента</button></th>
+            <th scope="col"><button onclick="sortBy('заказы','Дата_заказа')">Дата заказа</button></th>
+            <th scope="col"><button onclick="sortBy('заказы','Безналичный_расчет')">Безналичный расчет</button></th>
+            <th scope="col"><button onclick="sortBy('заказы','Код_сотрудника')">Сотрудник</button></th>
+          </tr>
+          <tr>
+            <th scope="col"><input type="text" value="" id = "search-input-clientName"></th>
+            <th scope="col"><input type="text" value="" id = "search-input-dateOrder"></th>
+            <th scope="col"></th>
+            <th scope="col"><input type="text" value="" id = "search-input-nameEmployee"></th>
+          </tr>
+        </thead>
+        <tbody id="rowTable" class="rowTable">
+            
+        </tbody>
+      </table>
+      <script src="scripts/consts.js"></script>
+      <script src="scripts/showTable.js"></script>
+      <script src="scripts/mainScript.js"></script>
+      <script src="scripts/contentOrders.js"></script>
+      <script src="scripts/createChildWindow.js"></script>
+      <script src="scripts/insertIntoChildTable.js"></script>
+  </body>
+</html>

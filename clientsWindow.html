@@ -7,7 +7,7 @@
   </head>
   <body>
     <h1>Список клиентов</h1>
-    <button type="button" onclick="addRows()" id = "addRows">Добавить</button>
+    <button type="button" onclick="addRows('rowTable', newRow, false)" id = "addRows">Добавить</button>
     <button class="hide" type="button" onclick="addRowsInDB('клиенты')" id = "addRowsInDB">Сохранить</button>
     <button class="hide" type="button" onclick="canceladdRows()" id = "canceladdRows">Отмена</button>
     <button type="button" onclick="closeWindow('Clients')" id = 'back'>Назад</button>
@@ -19,12 +19,10 @@
         <thead>
           <tr>
             <th scope="col"><button onclick="sortBy('клиенты','ФИО_клиента')">ФИО клиента</button></th>
-            <th scope="col"><button onclick="sortBy('клиенты','Код_компании')">Компания</button></th>
             <th scope="col"><button onclick="sortBy('клиенты','Контактный_телефон_клиента')">Контактный телефон</button></th>
           </tr>
           <tr>
             <th scope="col"><input type="text" value="" id = "search-input-nameClient"></th>
-            <th scope="col"><input type="text" value="" id = "search-input-idCompany"></th>
             <th scope="col"><input type="text" value="" id = "search-input-contactPhoneClient"></th>
           </tr>
         </thead>
@@ -32,8 +30,9 @@
             
         </tbody>
       </table>
-    <script src="scripts/mainScript.js"></script>
-    <script src="scripts/consts.js"></script>
+      <script src="scripts/consts.js"></script>
+      <script src="scripts/showTable.js"></script>
+      <script src="scripts/mainScript.js"></script>
     <script src="scripts/contentClients.js"></script>
   </body>
 </html>
