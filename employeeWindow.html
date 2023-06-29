@@ -6,9 +6,9 @@
     <title>Megafon</title>
   </head>
   <body>
-    <h1>Список Сотрудников</h1>
+    <h1>Список сотрудников</h1>
     <button type="button" onclick="addRows()" id = "addRows">Добавить</button>
-    <button class="hide" type="button" onclick="addRowsInDB('должности')" id = "addRowsInDB">Сохранить</button>
+    <button class="hide" type="button" onclick="addRowsInDB('сотрудники')" id = "addRowsInDB">Сохранить</button>
     <button class="hide" type="button" onclick="canceladdRows()" id = "canceladdRows">Отмена</button>
     <button type="button" onclick="closeWindow('Employee')" id = 'back'>Назад</button>
     <table>
@@ -18,14 +18,20 @@
         <col/>
         <thead>
           <tr>
-            <th scope="col"><button onclick="sortBy('должности','Код_компании')">Компания</button></th>
-            <th scope="col"><button onclick="sortBy('должности','Наименование_должности')">Наименование должности</button></th>
-            <th scope="col"><button onclick="sortBy('должности','Оклад')">Оклад</button></th>
+            <th scope="col"><button onclick="sortBy('сотрудники','Код_компании')">Наименование компании</button></th>
+            <th scope="col"><button onclick="sortBy('сотрудники','ФИО_сотрудника')">ФИО сотрудника</button></th>
+            <th scope="col"><button onclick="sortBy('сотрудники','Код_должности')">Должность</button></th>
+            <th scope="col"><button onclick="sortBy('сотрудники','Дата_рождения')">Дата рождения</button></th>
+            <th scope="col"><button onclick="sortBy('сотрудники','Контактный_телефон')">Контактный телефон</button></th>
+            <th scope="col"><button onclick="sortBy('сотрудники','Адрес')">Адрес</button></th>
           </tr>
           <tr>
-            <th scope="col"><input type="text" value="" id = "search-input-nameCompany"></th>
-            <th scope="col"><input type="text" value="" id = "search-input-jobTitle"></th>
-            <th scope="col"><input type="text" value="" id = "search-input-salary"></th>
+            <th scope="col"><input type="text" value="" id = "search-input-idCompany"></th>
+            <th scope="col"><input type="text" value="" id = "search-input-nameEmploee"></th>
+            <th scope="col"><input type="text" value="" id = "search-input-idJobTitle"></th>
+            <th scope="col"><input type="text" value="" id = "search-input-dateOfBorn"></th>
+            <th scope="col"><input type="text" value="" id = "search-input-contactPhone"></th>
+            <th scope="col"><input type="text" value="" id = "search-input-adress"></th>
           </tr>
         </thead>
         <tbody id="rowTable" class="rowTable">

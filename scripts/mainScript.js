@@ -38,40 +38,67 @@ function queryShowTable(table,contentTable){
         addContent(results, contentTable);
     })
 }
-function recordTable(table,elements,query){
+function recordTable(table,elements,query,pK){
     connection.query(query, 
     function (error, results, fields){
-        results.forEach(results => {
+        results.forEach(result => {
             let isFirstKey = true;
             let firstKey;
             for (const key in elements) {
                 let x = elements[key]
                 if (isFirstKey) {
                     isFirstKey = false;
-                    document.getElementById(key+'Rec').id='tr'+results[x];
-                    document.getElementById('updRec').value=results[x];
-                    document.getElementById('updRec').id='upd'+results[x];
-                    document.getElementById('saveButRowRec').value=results[x];
-                    document.getElementById('saveButRowRec').id='saveButRow'+results[x];
-                    document.getElementById('cancelUpdRec').id='cancelUpd'+results[x];
-                    document.getElementById('cancelUpdButRec').value=results[x];
-                    document.getElementById('cancelUpdButRec').id='cancelUpdBut'+results[x];
-                    document.getElementById('delColRec').id='delCol'+results[x];
-                    document.getElementById('delColButRec').value=results[x];
-                    document.getElementById('delColButRec').id='delColBut'+results[x];
-                    firstKey = results[x];
+                    document.getElementById(key+'Rec').id='tr'+result[x];
+                    document.getElementById('updRec').value=result[x];
+                    document.getElementById('updRec').id='upd'+result[x];
+                    document.getElementById('saveButRowRec').value=result[x];
+                    document.getElementById('saveButRowRec').id='saveButRow'+result[x];
+                    document.getElementById('cancelUpdRec').id='cancelUpd'+result[x];
+                    document.getElementById('cancelUpdButRec').value=result[x];
+                    document.getElementById('cancelUpdButRec').id='cancelUpdBut'+result[x];
+                    document.getElementById('delColRec').id='delCol'+result[x];
+                    document.getElementById('delColButRec').value=result[x];
+                    document.getElementById('delColButRec').id='delColBut'+result[x];
+                    firstKey = result[x];
                     continue;
                 }
-                document.getElementById(key+'Rec').value+=results[x];
+                document.getElementById(key+'Rec').value+=result[x];
                 document.getElementById(key+'Rec').id=key+firstKey;
             }
-        })
+            try{
+                if (selectsQuery){
+                    selectsQuery.forEach(selectElement=>{
+                        document.getElementById(selectElement.id).innerHTML=`<option selected>${result[selectElement.columnGoods]}</option>`;
+                        let idSelect = selectElement.id.replace(/Rec/g, '');
+                        document.getElementById(selectElement.id).id=idSelect+firstKey;
+                        connection.query(selectElement.query, function(error, resultsOpt, fields){
+                            resultsOpt.forEach(resultOpt=>{
+                                document.getElementById(idSelect+firstKey).innerHTML+=`<option>${resultOpt[selectElement.column]}</option>`;
+                            })
+                        })
+                    })
+                }
+            } catch {}
+            try{
+                imagesQuery.forEach(img=>{
+                    document.getElementById(img.id).src=result[img.column];
+                    let idSelect = img.id.replace(/Rec/g, '');
+                    document.getElementById(img.id).id=idSelect+firstKey;
+                })
+            } catch {}
+        }) 
     })
 }
 function updCol(id){
     for (const key in elements) {
         document.getElementById(key + id).readOnly = false;
     }
+    //try{
+        imagesQuery.forEach(img=>{
+            let idFile = img.id.replace(/Rec/g, '')+'Upd'+id;
+            document.getElementById(idFile).classList.toggle('hide');
+        })
+    //}catch  {}
     hideButton(id);
 }
 function hideButton(id){
@@ -103,11 +130,28 @@ function save(id){
                 windowError(messageError);
             };
         })
-    }   
+    }
+    try{
+        selectsQuery.forEach(select=>{
+            let idSelect = select.id.replace(/Rec/g, '')+id;
+            connection.query(`UPDATE megafon.${table} SET 
+            ${select.columnGoods} = '${document.getElementById(idSelect).value}' 
+            WHERE ${firstKey}=${id};`, 
+            function (error, results, fields){
+                if (error) {
+                    let messageError = `
+                    <div class = 'windowError' id ='windowError'>
+                        <h3>Проверьте правильность введенного поля ${select.columnGoods}</h3>
+                        <button class="" onclick="closeError()">ОК</button>
+                    </div>`;
+                    windowError(messageError);
+                };
+            })
+        }) 
+    } catch{}  
 }
 function filter(inputsFilter){
     for (const key in inputsFilter) {
-        console.log(`${key}`);
         document.getElementById(`${key}`).addEventListener('input', filterTable);  
         function filterTable() {
         const searchValue = document.getElementById(key).value.toLowerCase();
@@ -125,6 +169,10 @@ function filter(inputsFilter){
 }
 function addRows(){
     document.getElementById('rowTable').appendChild(newRow);
+    const selectElement = document.querySelector('select');
+    if (selectElement) {
+        addSelect();
+    }
     hideButtonSaveRow();
 }
 function canceladdRows(){
@@ -138,16 +186,37 @@ function hideButtonSaveRow(){
 }
 function addRowsInDB(table){
     let lastElems;
+    let cleanedPath;
     document.querySelectorAll('.updBut').forEach(results => {
         lastElems=Number(results.value)+1
     });
+    if (lastElems==undefined) lastElems = 1;
     let columnQuery=pK+', ';
     let inputsQuery=lastElems+', ';
+    try{
+            imagesQuery.forEach(img=>{
+            columnQuery+=img.column+', ';
+            let pathPhoto = document.getElementById(img.id).value;
+            cleanedPath = pathPhoto.replace(/^.*\\/, '');
+            inputsQuery+="'"+cleanedPath+"', ";
+        })
+    } catch{}
+    try{
+        if (selectsQuery) {
+            selectsQuery.forEach(opt=>{
+                columnQuery+=opt.columnGoods+", ";
+                inputsQuery+="'"+document.getElementById(opt.id).value+"', ";
+            })
+        };
+    } catch (error){
+        throw error
+    }
     let isFirstKey = true;
     let lastElement;
     for (let key in elements) {
         lastElement = elements[key];
     }
+    if (lastElement==undefined)lastElement=1;
     for (const key in elements) {
         if (isFirstKey){
             isFirstKey = false;
@@ -170,7 +239,8 @@ function addRowsInDB(table){
                     <h3>Проверьте правильность введенных полей при добавлении в таблицу ${table}</h3>
                     <button class="" onclick="closeError()">ОК</button>
                 </div>`
-            windowError(messageError);
+            //windowError(messageError);
+            throw error;
         }
         else results;
     })
@@ -192,6 +262,19 @@ function addRowsInDB(table){
     document.getElementById('delColRec').id='delCol'+lastElems;
     document.getElementById('delColButRec').value=lastElems;
     document.getElementById('delColButRec').id='delColBut'+lastElems;
+    try{
+        imagesQuery.forEach(img=>{
+            let idFile = img.id.replace(/Rec/g, '')+'Upd'+lastElems;
+            document.getElementById(img.id).classList.toggle('hide');
+            document.getElementById(img.id).id=idFile;
+            document.getElementById('td'+img.id).appendChild(newPhoto);
+            document.getElementById('td'+img.id).id='';
+            let idPhoto = img.id.replace(/Rec/g, '')+lastElems;
+            document.getElementById(img.id).id=idPhoto;
+            document.getElementById(idPhoto).src=cleanedPath;
+            document.getElementById(idPhoto).style.width='50px';
+        })
+    }catch{}
 }
 function delCol(id, table, primKey){
     connection.query(`DELETE FROM megafon.${table} WHERE ${primKey} = ${id};`, function (error, results, fields){
@@ -213,4 +296,12 @@ function sortBy(table,valSort){
     let query=`SELECT * FROM megafon.${table} ORDER BY ${valSort};`;
     recordTable(table,elements,query);
 }
-  
+function addSelect(){
+    selectsQuery.forEach(selectOpt=>{
+        connection.query(selectOpt.query, function(error, results, fields){
+            results.forEach(result=>{
+                document.getElementById(selectOpt.id).innerHTML+='<option>'+result[selectOpt.column]+'</option>';
+            })
+        })
+    })
+}

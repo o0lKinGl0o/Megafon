@@ -121,6 +121,48 @@ function createProvidersWindow() {
     providersWindow.show();
   });
 }
+function createClientsWindow() {
+  clientsWindow = new BrowserWindow({
+    modal: true,
+    show: false,
+    hasShadow: false,
+    //devTools: false,
+    //titleBarStyle: `hidden`,
+    //skipTaskbar:false,
+    webPreferences: {
+      //devTools: false,
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+    },
+  });
+  clientsWindow.loadFile("clientsWindow.html");
+  clientsWindow.once("ready-to-show", () => {
+    clientsWindow.maximize();
+    clientsWindow.show();
+  });
+}
+function createGoodsWindow() {
+  goodsWindow = new BrowserWindow({
+    modal: true,
+    show: false,
+    hasShadow: false,
+    //devTools: false,
+    //titleBarStyle: `hidden`,
+    //skipTaskbar:false,
+    webPreferences: {
+      //devTools: false,
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+    },
+  });
+  goodsWindow.loadFile("goodsWindow.html");
+  goodsWindow.once("ready-to-show", () => {
+    goodsWindow.maximize();
+    goodsWindow.show();
+  });
+}
 ipcMain.on("openChildWindow", (event, arg) => {
   createChildWindow();
   mainWindow.hide();
@@ -145,6 +187,18 @@ ipcMain.on("openProviders", (event, arg) => {
   createProvidersWindow();
   companyWindow.hide();
 });
+ipcMain.on("openClients", (event, arg) => {
+  createClientsWindow();
+  childWindow.hide();
+});
+ipcMain.on("openGoods", (event, arg) => {
+  createGoodsWindow();
+  childWindow.hide();
+});
+ipcMain.on("closeClientsWindow", (event, arg) => {
+  clientsWindow.close();
+  childWindow.show();
+});
 ipcMain.on("closeEmployeeWindow", (event, arg) => {
   employeeWindow.close();
   companyWindow.show();
@@ -152,4 +206,8 @@ ipcMain.on("closeEmployeeWindow", (event, arg) => {
 ipcMain.on("closeProvidersWindow", (event, arg) => {
   providersWindow.close();
   companyWindow.show();
+});
+ipcMain.on("closeGoodsWindow", (event, arg) => {
+  goodsWindow.close();
+  childWindow.show();
 });
