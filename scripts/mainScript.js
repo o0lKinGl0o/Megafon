@@ -248,7 +248,7 @@ function addRowsInDB(table, flag){
             document.getElementById(idPhoto).style.width='50px';
         })
     }catch{}
-    location.reload();
+    //location.reload();
 }
 function delCol(id, table, primKey,flag){
     let child='';

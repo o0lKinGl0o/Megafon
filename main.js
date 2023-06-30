@@ -184,6 +184,27 @@ function createOrdersWindow() {
     ordersWindow.show();
   });
 }
+function creatStatOrderWindow() {
+  statOrderWindow = new BrowserWindow({
+    modal: true,
+    show: false,
+    hasShadow: false,
+    //devTools: false,
+    //titleBarStyle: `hidden`,
+    //skipTaskbar:false,
+    webPreferences: {
+      //devTools: false,
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+    },
+  });
+  statOrderWindow.loadFile("statOrderWindow.html");
+  statOrderWindow.once("ready-to-show", () => {
+    statOrderWindow.maximize();
+    statOrderWindow.show();
+  });
+}
 ipcMain.on("openChildWindow", (event, arg) => {
   createChildWindow();
   mainWindow.hide();
@@ -204,6 +225,10 @@ ipcMain.on("openEmployee", (event, arg) => {
   createEmployeeWindow();
   companyWindow.hide();
 });
+ipcMain.on("openStatOrder", (event, arg) => {
+  creatStatOrderWindow();
+  ordersWindow.hide();
+});
 ipcMain.on("openProviders", (event, arg) => {
   createProvidersWindow();
   companyWindow.hide();
@@ -219,6 +244,10 @@ ipcMain.on("openGoods", (event, arg) => {
 ipcMain.on("openOrders", (event, arg) => {
   createOrdersWindow();
   childWindow.hide();
+});
+ipcMain.on("closeStatOrderWindow", (event, arg) => {
+  statOrderWindow.close();
+  ordersWindow.show();
 });
 ipcMain.on("closeClientsWindow", (event, arg) => {
   clientsWindow.close();

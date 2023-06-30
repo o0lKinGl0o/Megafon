@@ -19,7 +19,7 @@ const contentTable=`<tr id="trRec" class="">
                         </td>
                         <td>
                             <button type="button" id="updRec" onclick="updCol(this.value, elements, false)" value="">Редактировать</button>
-                            <button id="saveButRowRec" class="hide" type="button" onclick="save(this.value, elements, false ,table)" value="">Сохранить</button>
+                            <button id="saveButRowRec" class="hide" type="button" onclick="save(this.value, elements, false ,table,selectsQuery)" value="">Сохранить</button>
                         </td>
                         <td id="cancelUpdRec" class="hide"><button class="updBut" id="cancelUpdButRec" type="button" onclick="hideButton(this.value)" value="">Отмена</button></td>
                         <td id="delColRec"><button type="button" id="delColButRec" onclick="delCol(this.value,'товары', 'Код_товара', false)" value="">Удалить</button></td>
