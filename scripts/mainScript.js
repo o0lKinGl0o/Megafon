@@ -213,42 +213,43 @@ function addRowsInDB(table, flag){
             windowError(messageError);
             throw error;
         }
-        else results;
+        else {
+            for (const key in elements) {
+                document.getElementById(key+'Rec').readOnly=true;
+                document.getElementById(key+'Rec').id = key+lastElems;
+            }
+            hideButtonSaveRow(flag);
+            let child='';
+            if (flag) child='Child';
+            document.getElementById('saveButRow'+child+'Rec').value=lastElems;
+            document.getElementById('saveButRow'+child+'Rec').id='saveButRow'+lastElems;
+            document.getElementById('cancelUpd'+child+'Rec').value=lastElems;
+            document.getElementById('cancelUpd'+child+'Rec').id='cancelUpd'+lastElems;
+            document.getElementById('cancelUpdBut'+child+'Rec').value=lastElems;
+            document.getElementById('cancelUpdBut'+child+'Rec').id='cancelUpdBut'+lastElems;
+            document.getElementById('upd'+child+'Rec').classList.toggle('hide');
+            document.getElementById('upd'+child+'Rec').value=lastElems;
+            document.getElementById('upd'+child+'Rec').id='upd'+lastElems;
+            document.getElementById('delCol'+child+'Rec').classList.toggle('hide');
+            document.getElementById('delCol'+child+'Rec').id='delCol'+lastElems;
+            document.getElementById('delColBut'+child+'Rec').value=lastElems;
+            document.getElementById('delColBut'+child+'Rec').id='delColBut'+lastElems;
+            try{
+                imagesQuery.forEach(img=>{
+                    let idFile = img.id.replace(/Rec/g, '')+'Upd'+lastElems;
+                    document.getElementById(img.id).classList.toggle('hide');
+                    document.getElementById(img.id).id=idFile;
+                    document.getElementById('td'+img.id).appendChild(newPhoto);
+                    document.getElementById('td'+img.id).id='';
+                    let idPhoto = img.id.replace(/Rec/g, '')+lastElems;
+                    document.getElementById(img.id).id=idPhoto;
+                    document.getElementById(idPhoto).src=cleanedPath;
+                    document.getElementById(idPhoto).style.width='50px';
+                })
+            }catch{}
+            location.reload();
+        }
     })
-    for (const key in elements) {
-        document.getElementById(key+'Rec').readOnly=true;
-        document.getElementById(key+'Rec').id = key+lastElems;
-    }
-    hideButtonSaveRow(flag);
-    let child='';
-    if (flag) child='Child';
-    document.getElementById('saveButRow'+child+'Rec').value=lastElems;
-    document.getElementById('saveButRow'+child+'Rec').id='saveButRow'+lastElems;
-    document.getElementById('cancelUpd'+child+'Rec').value=lastElems;
-    document.getElementById('cancelUpd'+child+'Rec').id='cancelUpd'+lastElems;
-    document.getElementById('cancelUpdBut'+child+'Rec').value=lastElems;
-    document.getElementById('cancelUpdBut'+child+'Rec').id='cancelUpdBut'+lastElems;
-    document.getElementById('upd'+child+'Rec').classList.toggle('hide');
-    document.getElementById('upd'+child+'Rec').value=lastElems;
-    document.getElementById('upd'+child+'Rec').id='upd'+lastElems;
-    document.getElementById('delCol'+child+'Rec').classList.toggle('hide');
-    document.getElementById('delCol'+child+'Rec').id='delCol'+lastElems;
-    document.getElementById('delColBut'+child+'Rec').value=lastElems;
-    document.getElementById('delColBut'+child+'Rec').id='delColBut'+lastElems;
-    try{
-        imagesQuery.forEach(img=>{
-            let idFile = img.id.replace(/Rec/g, '')+'Upd'+lastElems;
-            document.getElementById(img.id).classList.toggle('hide');
-            document.getElementById(img.id).id=idFile;
-            document.getElementById('td'+img.id).appendChild(newPhoto);
-            document.getElementById('td'+img.id).id='';
-            let idPhoto = img.id.replace(/Rec/g, '')+lastElems;
-            document.getElementById(img.id).id=idPhoto;
-            document.getElementById(idPhoto).src=cleanedPath;
-            document.getElementById(idPhoto).style.width='50px';
-        })
-    }catch{}
-    //location.reload();
 }
 function delCol(id, table, primKey,flag){
     let child='';

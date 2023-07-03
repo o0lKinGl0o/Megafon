@@ -100,7 +100,7 @@ function createCompanyWindow() {
     companyWindow.show();
   });
 }
-function createCompanyUserWindow() {
+function createUserCompanyWindow() {
   companyWindow = new BrowserWindow({
     modal: true,
     show: false,
@@ -115,7 +115,7 @@ function createCompanyUserWindow() {
       enableRemoteModule: true,
     },
   });
-  companyWindow.loadFile("companyWindow.html");
+  companyWindow.loadFile("UserCompanyWindow.html");
   companyWindow.once("ready-to-show", () => {
     companyWindow.maximize();
     companyWindow.show();
@@ -137,6 +137,27 @@ function createEmployeeWindow() {
     },
   });
   employeeWindow.loadFile("employeeWindow.html");
+  employeeWindow.once("ready-to-show", () => {
+    employeeWindow.maximize();
+    employeeWindow.show();
+  });
+}
+function createUserEmployeeWindow() {
+  employeeWindow = new BrowserWindow({
+    modal: true,
+    show: false,
+    hasShadow: false,
+    //devTools: false,
+    //titleBarStyle: `hidden`,
+    //skipTaskbar:false,
+    webPreferences: {
+      //devTools: false,
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+    },
+  });
+  employeeWindow.loadFile("UserEmployeeWindow.html");
   employeeWindow.once("ready-to-show", () => {
     employeeWindow.maximize();
     employeeWindow.show();
@@ -280,13 +301,21 @@ ipcMain.on("openCompany", (event, arg) => {
   createCompanyWindow();
   childWindow.hide();
 });
+ipcMain.on("openUserCompany", (event, arg) => {
+  createUserCompanyWindow();
+  childUserWindow.hide();
+});
 ipcMain.on("closeChildWindow", (event, arg) => {
   childWindow.close();
   mainWindow.show();
 });
 ipcMain.on("closeCompanyWindow", (event, arg) => {
   companyWindow.close();
-  childWindow.show();
+  childUserWindow.show();
+});
+ipcMain.on("openUserEmployee", (event, arg) => {
+  createUserEmployeeWindow();
+  companyWindow.hide();
 });
 ipcMain.on("openEmployee", (event, arg) => {
   createEmployeeWindow();

@@ -2,6 +2,7 @@ let maxVal = {};
 let maxValElem = 0;
 let nameMaxValElem;
 let maxActiveClient;
+const useQuery = `USE megafon`;
 function maxGoods() {
     return new Promise((resolve, reject) => {
         connection.query("SELECT * FROM megafon.товары;", function (error, results, fields) {
@@ -43,7 +44,6 @@ maxGoods().then(({ maxValElem, nameMaxValElem }) => {
     console.error(error);
 });
 function activeClient() {
-    const useQuery = `USE megafon`;
     connection.query(useQuery, function (error, results, fields) {
         if (error) throw error;
         const mainQuery = `
@@ -58,7 +58,6 @@ function activeClient() {
         connection.query(mainQuery, function (error, results, fields) {
             if (error) throw error;
             results.forEach(result=>{
-                console.log(result);
                 const maxSalesClient = document.createElement('h3');
                 maxSalesClient.innerHTML = 'Самый активный клиент: '+result.Код_клиента+' сумма его покупок - '+result.Сумма_заказов+' Руб.';
                 document.body.appendChild(maxSalesClient);
@@ -67,3 +66,25 @@ function activeClient() {
     });
 }
 activeClient();
+function income() {
+    let withDate = document.getElementById('with').value;
+    let byDate = document.getElementById('by').value;
+    let query = `
+    SELECT SUM(товары.Цена * товары_в_покупке.Кол_во) AS total_income
+    FROM заказы
+    JOIN товары_в_покупке ON заказы.Код_заказа = товары_в_покупке.код_заказа
+    JOIN товары ON товары_в_покупке.Код_товара = товары.Название
+    WHERE заказы.Дата_заказа BETWEEN '${withDate}' AND '${byDate}';`
+    connection.query(useQuery, function (error, results, fields) {
+        if (error) throw error;
+        connection.query(query, function(error,results,fields){
+            if (error) throw error;
+            results.forEach(result=>{
+                const incomeWithBy = document.createElement('h3');
+                incomeWithBy.innerHTML='Прибыль за период: с ' + withDate + ' по ' + byDate + ' составила - ' + result.total_income;
+                document.getElementById('contIncome').appendChild(incomeWithBy);
+            })
+        })
+    })
+}
+
