@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style/main.css">
+    <title>Megafon</title>
+  </head>
+  <body>
+    <h1>Информация о компании</h1>
+    <p>Название компании: <input type="text" value="" readonly id = "nameCompany"></p>
+    <p>ФИО директора: <input type="text" value="" readonly id = "director"></p>
+    <p>Телефон компании: <input type="text" value="" readonly id = "phoneCompany"></p>
+    <p>Адрес компании: <input type="text" value="" readonly id = "adressCompany"></p>
+    <button type="button" onclick="openWindow('UserEmployee')" id = "employee">Сотрудники</button>
+    <button type="button" onclick="openWindow('Providers')" id = "provider">Поставщики</button>
+    <button type="button" onclick="closeWindow('Company')" id = 'back'>Назад</button>
+    <script src="scripts/mainScript.js"></script>
+    <script src="scripts/consts.js"></script>
+    <script src="scripts/contentUserInfCompany.js"></script>
+  </body>
+</html>
