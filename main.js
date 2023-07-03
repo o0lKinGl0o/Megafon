@@ -58,7 +58,49 @@ function createChildWindow() {
     childWindow.show();
   });
 }
+function createChildUserWindow() {
+  childUserWindow = new BrowserWindow({
+    modal: true,
+    show: false,
+    hasShadow: false,
+    //devTools: false,
+    //titleBarStyle: `hidden`,
+    //skipTaskbar:false,
+    webPreferences: {
+      //devTools: false,
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+    },
+  });
+  childUserWindow.loadFile("mainUserWindow.html");  
+  childUserWindow.once("ready-to-show", () => {
+    childUserWindow.maximize();
+    childUserWindow.show();
+  });
+}
 function createCompanyWindow() {
+  companyWindow = new BrowserWindow({
+    modal: true,
+    show: false,
+    hasShadow: false,
+    //devTools: false,
+    //titleBarStyle: `hidden`,
+    //skipTaskbar:false,
+    webPreferences: {
+      //devTools: false,
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+    },
+  });
+  companyWindow.loadFile("companyWindow.html");
+  companyWindow.once("ready-to-show", () => {
+    companyWindow.maximize();
+    companyWindow.show();
+  });
+}
+function createCompanyUserWindow() {
   companyWindow = new BrowserWindow({
     modal: true,
     show: false,
@@ -184,6 +226,27 @@ function createOrdersWindow() {
     ordersWindow.show();
   });
 }
+function createPriceListWindow() {
+  priceListWindow = new BrowserWindow({
+    modal: true,
+    show: false,
+    hasShadow: false,
+    //devTools: false,
+    //titleBarStyle: `hidden`,
+    //skipTaskbar:false,
+    webPreferences: {
+      //devTools: false,
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+    },
+  });
+  priceListWindow.loadFile("priceListWindow.html");
+  priceListWindow.once("ready-to-show", () => {
+    priceListWindow.maximize();
+    priceListWindow.show();
+  });
+}
 function creatStatOrderWindow() {
   statOrderWindow = new BrowserWindow({
     modal: true,
@@ -207,6 +270,10 @@ function creatStatOrderWindow() {
 }
 ipcMain.on("openChildWindow", (event, arg) => {
   createChildWindow();
+  mainWindow.hide();
+});
+ipcMain.on("openUserChildWindow", (event, arg) => {
+  createChildUserWindow();
   mainWindow.hide();
 });
 ipcMain.on("openCompany", (event, arg) => {
@@ -245,6 +312,10 @@ ipcMain.on("openOrders", (event, arg) => {
   createOrdersWindow();
   childWindow.hide();
 });
+ipcMain.on("openPriceList", (event, arg) => {
+  createPriceListWindow();
+  goodsWindow.hide();
+});
 ipcMain.on("closeStatOrderWindow", (event, arg) => {
   statOrderWindow.close();
   ordersWindow.show();
@@ -264,6 +335,14 @@ ipcMain.on("closeProvidersWindow", (event, arg) => {
 ipcMain.on("closeGoodsWindow", (event, arg) => {
   goodsWindow.close();
   childWindow.show();
+});
+ipcMain.on("closePriceListWindow", (event, arg) => {
+  priceListWindow.close();
+  goodsWindow.show();
+});
+ipcMain.on("closeUserChildWindow", (event, arg) => {
+  childUserWindow.close();
+  mainWindow.show();
 });
 ipcMain.on("closeOrdersWindow", (event, arg) => {
   ordersWindow.close();
