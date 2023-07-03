@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="style/main.css">
+        <title>Megafon</title>
+    </head>
+    <body>
+        <h1>Прайс-лист</h1>
+        <button type="button" onclick="closeWindow('PriceList')" id = 'back'>Назад</button>
+        <button type="button" onclick="printPriceList()" id = 'priceList'>Печать</button>
+        <table>
+            <!--<col style="width: 40%;"/>-->
+            <col/>
+            <col/>
+            <col/>
+            <thead>
+                <tr>
+                    <th>Тип товара</th>
+                    <th>Модель</th>
+                    <th>Цена</th>
+                </tr>
+            </thead>
+            <tbody id="rowTable" class="rowTable">
+            
+            </tbody>
+        </table>
+        <script src="scripts/consts.js"></script>
+        <script src="scripts/mainScript.js"></script>
+        <script src="scripts/showTable.js"></script>
+        <script src="scripts/contentPriceList.js"></script>
+    </body>
+</html>
