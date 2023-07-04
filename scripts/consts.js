@@ -12,3 +12,5 @@ function conFunc(){
     return connection;
 }
 const connection = conFunc();
+const PDFDocument = require('pdfkit');
+const fs = require('fs');

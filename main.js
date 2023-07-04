@@ -247,6 +247,27 @@ function createGoodsWindow() {
     goodsWindow.show();
   });
 }
+function createUserGoodsWindow() {
+  goodsWindow = new BrowserWindow({
+    modal: true,
+    show: false,
+    hasShadow: false,
+    //devTools: false,
+    //titleBarStyle: `hidden`,
+    //skipTaskbar:false,
+    webPreferences: {
+      //devTools: false,
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+    },
+  });
+  goodsWindow.loadFile("UserGoodsWindow.html");
+  goodsWindow.once("ready-to-show", () => {
+    goodsWindow.maximize();
+    goodsWindow.show();
+  });
+}
 function createOrdersWindow() {
   ordersWindow = new BrowserWindow({
     modal: true,
@@ -263,6 +284,27 @@ function createOrdersWindow() {
     },
   });
   ordersWindow.loadFile("ordersWindow.html");
+  ordersWindow.once("ready-to-show", () => {
+    ordersWindow.maximize();
+    ordersWindow.show();
+  });
+}
+function createUserOrdersWindow() {
+  ordersWindow = new BrowserWindow({
+    modal: true,
+    show: false,
+    hasShadow: false,
+    //devTools: false,
+    //titleBarStyle: `hidden`,
+    //skipTaskbar:false,
+    webPreferences: {
+      //devTools: false,
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+    },
+  });
+  ordersWindow.loadFile("UserOrdersWindow.html");
   ordersWindow.once("ready-to-show", () => {
     ordersWindow.maximize();
     ordersWindow.show();
@@ -332,6 +374,10 @@ ipcMain.on("closeChildWindow", (event, arg) => {
 });
 ipcMain.on("closeCompanyWindow", (event, arg) => {
   companyWindow.close();
+  childWindow.show();
+});
+ipcMain.on("closeChildCompanyWindow", (event, arg) => {
+  companyWindow.close();
   childUserWindow.show();
 });
 ipcMain.on("openUserEmployee", (event, arg) => {
@@ -358,6 +404,10 @@ ipcMain.on("openUserClients", (event, arg) => {
   createUserClientsWindow();
   childUserWindow.hide();
 });
+ipcMain.on("openUserGoods", (event, arg) => {
+  createUserGoodsWindow();
+  childUserWindow.hide();
+});
 ipcMain.on("openGoods", (event, arg) => {
   createGoodsWindow();
   childWindow.hide();
@@ -365,6 +415,10 @@ ipcMain.on("openGoods", (event, arg) => {
 ipcMain.on("openOrders", (event, arg) => {
   createOrdersWindow();
   childWindow.hide();
+});
+ipcMain.on("openUserOrders", (event, arg) => {
+  createUserOrdersWindow();
+  childUserWindow.hide();
 });
 ipcMain.on("openPriceList", (event, arg) => {
   createPriceListWindow();
@@ -394,6 +448,10 @@ ipcMain.on("closeGoodsWindow", (event, arg) => {
   goodsWindow.close();
   childWindow.show();
 });
+ipcMain.on("closeUserGoodsWindow", (event, arg) => {
+  goodsWindow.close();
+  childUserWindow.show();
+});
 ipcMain.on("closePriceListWindow", (event, arg) => {
   priceListWindow.close();
   goodsWindow.show();
@@ -401,6 +459,10 @@ ipcMain.on("closePriceListWindow", (event, arg) => {
 ipcMain.on("closeUserChildWindow", (event, arg) => {
   childUserWindow.close();
   mainWindow.show();
+});
+ipcMain.on("closeUserOrdersWindow", (event, arg) => {
+  ordersWindow.close();
+  childUserWindow.show();
 });
 ipcMain.on("closeOrdersWindow", (event, arg) => {
   ordersWindow.close();
