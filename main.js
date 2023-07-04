@@ -205,6 +205,27 @@ function createClientsWindow() {
     clientsWindow.show();
   });
 }
+function createUserClientsWindow() {
+  clientsWindow = new BrowserWindow({
+    modal: true,
+    show: false,
+    hasShadow: false,
+    //devTools: false,
+    //titleBarStyle: `hidden`,
+    //skipTaskbar:false,
+    webPreferences: {
+      //devTools: false,
+      nodeIntegration: true,
+      contextIsolation: false,
+      enableRemoteModule: true,
+    },
+  });
+  clientsWindow.loadFile("UserClientsWindow.html");
+  clientsWindow.once("ready-to-show", () => {
+    clientsWindow.maximize();
+    clientsWindow.show();
+  });
+}
 function createGoodsWindow() {
   goodsWindow = new BrowserWindow({
     modal: true,
@@ -333,6 +354,10 @@ ipcMain.on("openClients", (event, arg) => {
   createClientsWindow();
   childWindow.hide();
 });
+ipcMain.on("openUserClients", (event, arg) => {
+  createUserClientsWindow();
+  childUserWindow.hide();
+});
 ipcMain.on("openGoods", (event, arg) => {
   createGoodsWindow();
   childWindow.hide();
@@ -352,6 +377,10 @@ ipcMain.on("closeStatOrderWindow", (event, arg) => {
 ipcMain.on("closeClientsWindow", (event, arg) => {
   clientsWindow.close();
   childWindow.show();
+});
+ipcMain.on("closeUserClientsWindow", (event, arg) => {
+  clientsWindow.close();
+  childUserWindow.show();
 });
 ipcMain.on("closeEmployeeWindow", (event, arg) => {
   employeeWindow.close();
