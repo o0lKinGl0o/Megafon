@@ -8,7 +8,7 @@ const contentTable=`<tr id="trRec" class="">
                             </select>
                         </td>
                         <td><input type="date" class="dateOrderRec" value="" readonly id="dateOrderRec"></td>
-                        <td><input type="text" class="сashPayRec" value="" readonly id="сashPayRec"></td>
+                        <td><input type="checkbox" class="сashPayRec" value="" id="сashPayRec" onclick="toggleCheckboxValue(this)"></td>
                         <td>
                             <select id="nameEmployeeRec">
                             </select>
@@ -98,7 +98,7 @@ newRow.innerHTML = `
         </select>
     </td>    
     <td><input type="date" class="dateOrderRec" value="" id="dateOrderRec"></td>
-    <td><input type="text" class="сashPayRec" value="" id="сashPayRec"></td>
+    <td><input type="checkbox" class="сashPayRec" value="" id="сashPayRec" onclick="toggleCheckboxValue(this)"></td>
     <td>
         <select id="nameEmployeeRec">
         </select>
@@ -118,4 +118,13 @@ const inputsFilter={
     'search-input-dateOrder': 'dateOrderRec'
 };
 filter(inputsFilter);
+
+function toggleCheckboxValue(checkbox) {
+    console.log(checkbox);
+    if (checkbox.checked) {
+      checkbox.value = 0;
+    } else {
+      checkbox.value = 1;
+    }
+}
 

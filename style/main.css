@@ -74,6 +74,8 @@ button,input{
     font-family: "PTSans-Regular";
     margin: 0.5%;
     transition: 0.5s;
+    height: 30px;
+
 }
 input{
     background-color: #8E6C88;
@@ -81,7 +83,6 @@ input{
 }
 input:hover{
     background-color: #879DB0;
-    padding: 1%;
     color: #263D42;
 }
 button{
@@ -111,13 +112,35 @@ input::placeholder {
 table{
     width: 80%;
     margin-left: 10%;
+    table-layout: fixed;
 }
 table tr td input{
     width: 95%;
 }
 th input{
     width: 95%;
+    padding: 1%;
+    height: 30px;
+}
+table td input, th input{
+    height: 25px;
+}
+table button{
+    width: 100%;
+}
+select{
+    width: 97%;
+    border: none;
+    padding: 2.5%;
+    border-radius: 5px;
 }
 th button{
     width: 97%;
+    height: 40px;
+}
+select{
+
+}
+td button{
+    height: 30px;
 }

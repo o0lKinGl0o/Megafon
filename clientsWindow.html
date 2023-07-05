@@ -7,23 +7,25 @@
   </head>
   <body>
     <h1>Список клиентов</h1>
-    <button type="button" onclick="addRows('rowTable', newRow, false, selectsQuery)" id = "addRows">Добавить</button>
     <button class="hide" type="button" onclick="addRowsInDB('клиенты')" id = "addRowsInDB">Сохранить</button>
     <button class="hide" type="button" onclick="canceladdRows()" id = "canceladdRows">Отмена</button>
-    <button type="button" onclick="closeWindow('Clients')" id = 'back'>Назад</button>
     <table>
-        <!--<col style="width: 40%;"/>-->
-        <col/>
-        <col/>
-        <col/>
+        <col style="width: 35%;"/>
+        <col style="width: 35%;"/>
+        <col style="width: 15%;"/>
+        <col style="width: 15%;"/>
         <thead>
           <tr>
             <th scope="col"><button onclick="sortBy('клиенты','ФИО_клиента')">ФИО клиента</button></th>
             <th scope="col"><button onclick="sortBy('клиенты','Контактный_телефон_клиента')">Контактный телефон</button></th>
+            <th scope="col"><button type="button" onclick="addRows('rowTable', newRow, false, selectsQuery)" id = "addRows">Добавить</button></th>
+            <th scope="col"><button type="button" onclick="closeWindow('Clients')" id = 'back'>Назад</button></th>
           </tr>
           <tr>
             <th scope="col"><input type="text" value="" id = "search-input-nameClient"></th>
             <th scope="col"><input type="text" value="" id = "search-input-contactPhoneClient"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
           </tr>
         </thead>
         <tbody id="rowTable" class="rowTable">

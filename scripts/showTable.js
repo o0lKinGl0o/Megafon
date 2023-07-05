@@ -1,4 +1,4 @@
-function queryShowTable(contentTable,queryShowTable,idTable){
+async function queryShowTable(contentTable,queryShowTable,idTable){
     connection.query(queryShowTable, 
     function (error, results, fields){
         addContent(results, contentTable,idTable);
@@ -62,6 +62,12 @@ function recordTable(elements,query,pK,flag,selectsQuery){
                     document.getElementById(img.idUpd).id=idImgUpd+firstKey;
                 })
             } catch {}
+            try{
+                let checkboxElem = document.querySelectorAll('input[type=checkbox]');
+                checkboxElem.forEach(result=>{
+                    if (result.value==1) result.checked = true;
+                })
+            }catch{}
         }) 
     })
 }
